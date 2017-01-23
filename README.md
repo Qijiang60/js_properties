@@ -1,0 +1,2 @@
+# js_properties
+在JavaScript文件中读取properties文件的方法
