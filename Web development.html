@@ -1,0 +1,504 @@
+https://www.ibm.com/developerworks/cn/web/1305_hezj_jqueryi18n/
+
+<!-- LAYOUT -->
+<!-- LEADSPACE_BEGIN --> 
+<div id="ibm-leadspace-head">
+	<!-- LEADSPACE_BODY_BEGIN --> 
+	<div id="ibm-leadspace-body">
+		<!-- Navigation_Trail_BEGIN -->
+      <ul id="ibm-navigation-trail"><li><a href="http://www.ibm.com/developerworks/cn/">developerWorks 中国</a></li><li><a href="http://www.ibm.com/developerworks/cn/topics/">技术主题</a></li><li><a href="http://www.ibm.com/developerworks/cn/web/">Web development</a></li><li><a href="http://www.ibm.com/developerworks/cn/views/web/libraryview.jsp">文档库</a></li></ul>
+		<!-- END_Navigation_Trail -->
+			<!-- Title_Subtitle -->
+			<h1>使用 jQuery.i18n.properties 实现 Web 前端的国际化
+		</h1>
+	</div>
+	<!-- LEADSPACE_BODY_END --> 
+	<!-- SUMMARY_BEGIN -->
+	<div id="dw-summary-area" class="dw-summary-columns">
+		<div class="ibm-col-6-4">
+		<p>国际化是现在 Web 应用程序开发中的重要一环。jQuery.i18n.properties 是一款轻量级的 jQuery 国际化插件，能在不对后端做任何更改的情况下，实现 Web 前端的国际化。与其他国际化工具相比， jQuery.i18n.properties 插件具有简单、易用、松耦合的特点。本文通过实际的例子，介绍如何通过 jQuery.i18n.properties 插件来实现 Web 前端的国际化。</p>
+		<p class="ibm-no-print ibm-ind-link">
+
+			
+			<span id="nCmts"></span>
+		</p>
+		</div>
+		<div class="ibm-col-6-2 dw-toc-margin">
+			<p class="dw-summary-author"><a href="#authorN10026" class="ibm-popup-link" onclick="ibmweb.overlay.show('authorN10026',this);return false;">何 志军</a>, 软件工程师,  IBM</p>
+<div id="authorN10026" class="ibm-common-overlay"><div class="ibm-head"><p><a href="#close" class="ibm-common-overlay-close">关闭 [x]</a></p></div><div class="ibm-body"><div class="ibm-main"><div class="ibm-title"><!--this is where the h2 usually goes--></div><div class="ibm-container ibm-alternate"><div class="ibm-container-body">
+<p><!--.-->
+何志军是 IBM 系统与科技实验室软件工程师，主要从事 IBM Systems Director 相关的开发工作，对云计算、HTML5 及移动开发有浓厚的兴趣。可以通过<a href="http://www.ibm.com/developerworks/mydeveloperworks/profiles/user/squirrel2012">社区</a>和他联系。</p><br /><br /></div></div></div></div><div class="ibm-footer"><!----></div></div>
+			<p class="dw-summary-date">2013 年 5 月 30 日</p>
+			
+
+
+			<div aria-hidden="true" class="ibm-container" id="dw-toc"><div class="ibm-container-body"><ul class="ibm-twisty"><li><a href="#toggle" class="ibm-twisty-trigger"><img src="//www.ibm.com/i/c.gif" alt="-"/></a><span class="ibm-twisty-head">内容</span><div class="ibm-twisty-body"><ul style="font-size:0.8em" class="ibm-link-list">
+<li><a class="ibm-anchor-down-em-link" href="#major1">jQuery.i18n.properties 简介</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#major2">jQuery.i18n.properties API</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#major3">示例</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#major4">问题与改进</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#major5">总结</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#download">下载</a></li>
+<li><a class="ibm-anchor-down-em-link" href="#resources">参考资料 </a></li>
+<li><a class="ibm-anchor-down-em-link" href="#icomments">评论</a></li></ul></div></li></ul></div></div>
+		</div>
+	</div>
+	<!-- SUMMARY_END -->
+</div>
+<!-- LEADSPACE_END -->
+
+<div id="ibm-pcon">
+
+<!-- BEGIN_IBM-CONTENT -->
+<div id="ibm-content">
+
+<!-- BEGIN_IBM-CONTENT-BODY -->
+<div id="ibm-content-body">
+
+<!-- BEGIN_IBM-CONTENT-MAIN -->
+<div id="ibm-content-main">
+
+<!-- 1_1_COLUMN_BEGIN -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1">
+
+<h2 id="major1">jQuery.i18n.properties 简介</h2><p>在介绍 jQuery.i18n.properties 之前，我们先来看一下什么是国际化。国际化英文单词为：Internationalization，又称 i18n，“i”为单词的第一个字母，“18”为“i”和“n”之间单词的个数，而“n”代表这个单词的最后一个字母。在计算机领域，国际化是指设计能够适应各种区域和语言环境的软件的过程。</p><p>jQuery.i18n.properties 是一款轻量级的 jQuery 国际化插件。与 Java 里的资源文件类似，jQuery.i18n.properties 采用 .properties 文件对 JavaScript 进行国际化。jQuery.i18n.properties 插件根据用户指定的（或浏览器提供的 ）语言和国家编码（符合 ISO-639 和 ISO-3166 标准）来解析对应的以“.properties”为后缀的资源文件。</p><p>利用资源文件实现国际化是一种比较流行的方式，例如 Android 应用就可以采用以语言和国家编码命名的资源文件来实现国际化。jQuery.i18n.properties 插件中的资源文件以“.properties”为后缀，包含了区域相关的键值对。我们知道，Java 程序也可以使用以 .properties 为后缀的资源文件来实现国际化，因此，当我们要在 Java 程序和前端 JavaScript 程序中共享资源文件时，这种方式就显得特别有用。jQuery.i18n.properties 插件首先加载默认的资源文件（例如：strings.properties），然后加载针对特定语言环境的资源文件（例如：strings_zh.properties），这就保证了在未提供某种语言的翻译时，默认值始终有效。开发人员可以以 JavaScript 变量（或函数）或 Map 的方式使用资源文件中的 key。</p><p>总的来说，jQuery.i18n.properties 有一下一些特点：</p><ol type="1"><li>
+使用 Java 标准的 .properties 文件作为资源文件，资源文件命名有以下三种格式：
+			 
+<div class="codesection"><pre class="displaycode"> basename_properties 
+ basename_language.properties 
+ basename_language_country.properties</pre></div></li><li>
+使用 ISO-639 作为语言编码标准，ISO-3166 作为国家名称编码标准</li><li>
+按顺序加载默认资源文件和指定语言环境的资源文件，保证默认值始终可用</li><li>
+未指定语言环境时使用浏览器提供的语言</li><li>
+可以在资源字符串中使用占位符（例如：hello= 你好 {0}! 今天是 {1}。）</li><li>
+资源文件中的 Key 支持命名空间（例如：com.company.msgs.hello = Hello!）</li><li>
+支持跨行的值</li><li>
+可以以 JavaScript 变量（或函数）或 Map 的方式使用资源文件中的 Key</li></ol><div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major2">jQuery.i18n.properties API</h2><p>jQuery.i18n.properties 的 API 非常简单，只有少数几个 API，即 jQuery.i18n.properties()、jQuery.i18n.prop()、jQuery.i18n.browserLang()。当然，和其他 jQuery 插件一样，我们也可以采用 $.i18n.properties()、$.i18n.prop() 和 $.i18n.browserLang() 的形式使用这用这些 API。</p><h3 id="minor2.1">jQuery.i18n.properties(settings)</h3><p>该方法加载资源文件，其中 settings 是配置加载选项的一系列键值对，各配置项的具体描述如表 1 所示。</p><h5 id="N10078">表 1. settings</h5><table border="0" cellpadding="0" cellspacing="0" class="ibm-data-table" summary="settings"><thead xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tr><th><strong>选项</strong></th><th><strong>描述</strong></th><th><strong>类型</strong></th><th><strong>可选？</strong></th></tr></thead><tbody xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tr><td>
+ name 
+</td><td>
+资源文件的名称，例如 strings 或 [strings1,strings2]，前者代表一个资源文件，后者代表资源文件数组。
+</td><td>
+ String 或 String[] 
+</td><td>
+否
+</td></tr><tr><td>
+ path 
+</td><td>
+资源文件所在目录的路径
+</td><td>
+ String 
+</td><td>
+是
+</td></tr><tr><td>
+ mode 
+</td><td>
+加载模式：“vars”表示以 JavaScript 变量或函数的形式使用资源文件中的 Key，“map”表示以 Map 的方式使用资源文件中的 Key，“both”表示可以同时使用两种方式。如果资源文件中的 Key 包含 JavaScript 的关键字，则只能采用“map”。默认值是“vars”。
+</td><td>
+ String 
+</td><td>
+是
+</td></tr><tr><td>
+ language 
+</td><td>
+ ISO-639 指定的语言编码（如：“en”表示英文、“zh”表示中文），或同时使用 ISO-639 指定的语言编码和 ISO-3166 指定的国家编码（如：“en_US”，“zh_CN”等）。如果不指定，则采用浏览器报告的语言编码。
+</td><td>
+ String 
+</td><td>
+是
+</td></tr><tr><td>
+ cache 
+</td><td>
+指定浏览器是否对资源文件进行缓存，默认为 false。
+</td><td>
+ boolean 
+</td><td>
+是
+</td></tr><tr><td>
+ encoding 
+</td><td>
+加载资源文件时使用的编码。默认为 UTF-8。
+</td><td>
+ String 
+</td><td>
+是
+</td></tr><tr><td>
+ callback 
+</td><td>
+代码执行完成时运行的回调函数
+</td><td>
+ function 
+</td><td>
+是
+</td></tr></tbody></table><p>jQuery.i18n.properties() 的使用方法如清单 1 所示。</p><h5 id="listing1">清单 1. jQuery.i18n.properties() 用法</h5><div class="codesection"><pre class="displaycode"> jQuery.i18n.properties({ 
+    name:'strings',// 资源文件名称
+    path:'bundle/',// 资源文件所在目录路径
+    mode:'both',// 模式：变量或 Map 
+    language:'pt_PT',// 对应的语言
+    cache:false, 
+    encoding: 'UTF-8', 
+    callback: function() {// 回调方法
+    } 
+ });</pre></div><h3 id="minor2.2">jQuery.i18n.prop(key)</h3><p>该方法以 map 的方式使用资源文件中的值，其中 key 指的是资源文件中的 key。当 key 指定的值含有占位符时，可以使用 jQuery.i18n.prop(key,var1,var2 … ) 的形式，其中 var1,var2 …对各占位符依次进行替换。例如资源文件中有“msg_hello= 您好 {0}，今天是 {1}。”的键值对，则我们可以采用“jQuery.i18n.prop( ‘ msg_hello ’ , ’小明’ , ’星期一’ );”的形式使用 msg_hello。</p><p>jQuery.i18n.browserLang() 用于获取浏览浏览器的语言信息，这里不再单独介绍。</p><div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major3">示例</h2><p>下面我们以一个具体的示例来介绍如何通过 jQuery.i18n.properties 插件来实现 Web 前端的国际化。我们建立一个名为 hello-i18n 的 Java Web 应用，该应用根据浏览器的语言决定以英文或中文显示登录界面，登录成功后以相应的语言显示欢迎信息，登录失败则以相应的语言显示错误信息。</p><p>为了达到松耦合的目的，前端采用纯 JavaScript+HTML 来实现（我们的目的是介绍如何实现国际化，而不是如何美化界面，因此暂不使用 CSS），服务器端采用 RESTFul Web 服务。前端通过 jQuery Ajax 的方式与服务器端进行交互，避免 JSP 等传统 Java Web 应用中前后端代码冗杂在一起的现象。</p><h3 id="minor3.1">开发测试环境</h3><ul class="ibm-bullet-list"><li>操作系统：Windows7 64 位专业版。</li><li>IDE：Eclipse-JEE-Juno。</li><li>Libs：jQuery 1.7.1，jQuery.i18n.properties 1.0.9，Apache Wink 1.1.3。</li><li>测试浏览器：Google Chrome 21.0.1180.83 m，FireFox 15.0.1。</li></ul><h3 id="minor3.2">服务器端的 RESTFul Web 服务</h3><p>我们采用 Apache Wink 来实现服务器端 RESTFul Web 服务（关于如何使用 Apache Wink 来实现 RESTFul Web 服务，请参考“参考资料”一节中关于 Wink 的参考资料），这个 Web 服务实现用户验证功能。由于我们的重点不在服务器端，因此我们不真正验证用户，而是模拟验证功能，并生成一个假的密钥（在真实的环境中，密钥会被用来对其他 REST 请求进行验证）。REST API 如表 2 所示，代码如清单 2 所示。</p><h5 id="N10103">表 2. REST API</h5><table border="0" cellpadding="0" cellspacing="0" class="ibm-data-table" summary="REST API"><thead xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tr><th><strong>属性</strong></th><th><strong>描述</strong></th></tr></thead><tbody xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><tr><td>
+描述
+</td><td>
+验证用户信息，并生成密钥
+</td></tr><tr><td>
+ URI 示例
+</td><td>
+ http://localhost:8080/rest/users/{id}/tokens 
+</td></tr><tr><td>
+ HTTP 请求类型
+</td><td>
+ POST 
+</td></tr><tr><td>
+ Request Boy 
+</td><td>
+ {password:”…”} 
+</td></tr><tr><td>
+ Response Headers 
+</td><td>
+ Content-type: application/json 
+</td></tr><tr><td>
+ Response Code 
+</td><td>
+ 200：OK - 验证成功 <br />
+ 401：Unauthorized - 密码不正确 <br />
+ 403：Forbidden - 用户不存在
+</td></tr><tr><td>
+ Response Body 
+</td><td>
+ {token:” Y29udHJvbGxlci5yZWFkIiwib3BlbmlkIiwicGFzc dvcQd3Jp dGUiXSwiZW...”} 
+</td></tr></tbody></table><h5 id="listing2">清单 2. REST 代码</h5><div class="codesection"><pre class="displaycode"> @Path("/users") 
+ public class RESTApi { 
+
+ @Path("/{id}/tokens") 
+ @POST 
+ @Produces({ MediaType.APPLICATION_JSON }) 
+ @Consumes({ MediaType.APPLICATION_JSON }) 
+ public Response authenticate(@PathParam("id") String id, 
+ Map&lt;String, Object&gt; payload) { 
+        // 模拟验证功能，仅当用户名为"i18n", 密码为"123456"时验证成功
+ if (id.equals("i18n")) { 
+ String pwd = (String) payload.get("password"); 
+    if (pwd.equals("123456")) { 
+        // 生成模拟密钥
+        Map&lt;String, String&gt; token = new HashMap&lt;String, String&gt;(); 
+        token.put("token", 
+            "Y29udHJvbGxlci5yZWFkIiwib3BlbmlkIiwicGFzc3dvcmQud3JpdGUiXSwiZW..."); 
+ return Response.status(Status.OK).entity(token).build(); 
+    } else { 
+        return Response.status(Status.UNAUTHORIZED).build(); 
+    } 
+ } 
+    return Response.status(Status.FORBIDDEN).build(); 
+ } 
+
+ }</pre></div><h3 id="minor3.3">建立资源文件</h3><p>在 Eclipse 中，对 hello-i18n 项目建立如图 1 所示的目录结构。</p><h5 id="fig1">图 1. 项目组织结构</h5><img alt="图 1. 项目组织结构" src="image003.jpg" width="299" /><p>在 i18n 目录下创建 strings.properties 和，stirngs_zh.properties 两个资源文件，其中 strings.properties 对应默认翻译，如清单 3 所示；string_zh.properties 对应中文翻译，如清单 4 所示。</p><h5 id="listing3">清单 3. stirngs.properties</h5><div class="codesection"><pre class="displaycode"> string_username=User name 
+ string_password=Password 
+ string_login=Login 
+ string_hello=Hello {0}，Welcome to jQuery.i18n.properties，your token is {1}。
+ string_usernotexist=User does not exist 
+ string_wrongpassword=Wrong Password</pre></div><h5 id="listing4">清单 4. strings_zh.properties</h5><div class="codesection"><pre class="displaycode"> string_username= 用户名
+ string_password= 密码
+ string_login= 登陆
+ string_hello= 您好 {0}，欢迎使用 jQuery.i18n.properties，您的密钥是：{1}。
+ string_usernotexist= 用户不存在
+ string_wrongpassword= 密码错误</pre></div><h3 id="minor3.4">引用 jQuery.i18n.properties 插件</h3><p>和其他 jQuery 插件一样，jQuery.i18n.properties 插件依赖于 jQuery，因此我们首先需要引用 jQuery。jQuery.i18n.properties 对 jQuery 的版本没有明确要求，这里我们使用 jQuery-1.7.1。我们使用清单 5 所示的方式在 index.html 中引用 jQuery 和 jQuery.i18n.properties 插件。</p><h5 id="listing5">清单 5. 引用 jQuery.i18n.properties</h5><div class="codesection"><pre class="displaycode"> &lt;script type="text/javascript" src="resources/lib/jquery-1.7.1.min.js"&gt; 
+ &lt;/script&gt; 
+ &lt;script type="text/javascript" src="resources/lib/jquery.i18n.properties-1.0.9.js"&gt; 
+ &lt;/script&gt;</pre></div><p>index .html 中还定义了界面元素，如清单 6 所示。</p><h5 id="listing6">清单 6. 界面元素</h5><div class="codesection"><pre class="displaycode"> &lt;div id="content"&gt; 
+ &lt;div&gt; 
+ &lt;label id="label_username"&gt;&lt;/label&gt; 
+ &lt;input type="text" id="username"&gt;&lt;/input&gt; 
+ &lt;/div&gt; 
+ &lt;div&gt; 
+ &lt;label id="label_password"&gt;&lt;/label&gt; 
+ &lt;input type="password" id="password"&gt;&lt;/input&gt; 
+ &lt;/div&gt; 
+ &lt;input type="button" id="button_login"/&gt; 
+ &lt;/div&gt;</pre></div><h3 id="minor3.5">使用 jQuery.i18n.properties 插件</h3><p>在 main.js，使用清单 7 所示的方法加载资源文件，清单 7 中未指定“language”参数选项，表示使用浏览器语言。除了在 jQuery.i18n.properties() 定义的回调函数中使用资源文件中的定义的值外，成功加载资源文件后，我们也可以在其它地方使用这些值。</p><h5 id="listing7">清单 7. 加载资源文件</h5><div class="codesection"><pre class="displaycode"> function loadProperties(){ 
+ jQuery.i18n.properties({// 加载资浏览器语言对应的资源文件
+ name:'strings', // 资源文件名称
+ path:'resources/i18n/', // 资源文件路径
+ mode:'map', // 用 Map 的方式使用资源文件中的值
+ callback: function() {// 加载成功后设置显示内容
+ // 显示“用户名”
+   $('#label_username').html($.i18n.prop('string_username')); 
+            // 显示“密码”
+   $('#label_password').html($.i18n.prop('string_password')); 
+            // 显示“登录”
+   $('#button_login').val($.i18n.prop('string_login')); 
+ } 
+ }); 
+ }</pre></div><p>当用户点击登录按钮后，我们使用 REST 请求将用户信息发送到前文定义的 RESTFul Web 服务，若用户信息验证成功，则显示欢迎信息和 Web 服务返回的密钥，若验证失败则显示错误信息，代码如清单 8 所示。</p><h5 id="listing8">清单 8. 前端登录逻辑</h5><div class="codesection"><pre class="displaycode"> $('#button_login').click(function(){// 点击登录按钮后验证用户信息
+ var id = $('#username').val();// 用户名
+ var payload = {}; 
+ payload['password']=$('#password').val(); 
+ payload = $.toJSON(payload); 
+ $.ajax({ 
+ url : 'rest/users/' + id + '/tokens',//REST URI 
+ type : 'POST', 
+ data: payload, // Request body 
+ contentType : 'application/json', 
+ dataType:'json', 
+ success : function(data) { 
+ // 验证成功则显示欢迎信息和密钥
+ // 使用含占位符的值
+ $('#content').html($.i18n.prop('string_hello',id,data.token)); 
+ }, 
+ error : function(jqXHR, textStatus, errorThrown) { 
+ if(jqXHR.status == 403){ 
+ // 用户不存在
+ alert($.i18n.prop('string_usernotexist')); 
+   }else if(jqXHR.status == 401){ 
+       // 密码错误
+       alert($.i18n.prop('string_wrongpassword')); 
+   }else{ 
+       // 其他异常信息
+       alert(errorThrown); 
+   } 
+ } 
+ }); 
+ });</pre></div><h3 id="minor3.6">运行效果</h3><p>将 hello-i18n 项目部署到本地的 Tomcat 上，打开 Chrome 浏览器，将语言设置为英文，在地址栏中输入 http://localhost:8080/hello-i18n，运行效果如图 2 所示。</p><h5 id="fig2">图 2. 英文环境下的运行效果</h5><img alt="图 2. 英文环境下的运行效果" src="image005.jpg" width="573" /><p>将语言更改为简体中文，重启 Chrome，运行效果如图 3 所示。</p><h5 id="fig3">图 3. 中文环境下的运行效果</h5><img alt="图 3. 中文环境下的运行效果" src="image007.jpg" width="562" /><div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major4">问题与改进</h2><h3 id="minor4.1">资源文件命名问题</h3><p>在上面的示例中，我们的程序只自动识别中文和英文两种翻译，而不能进一步区分简体中文与繁体中文。为了使上面的示例能够根据浏览器语言设置自动区分简体中文和繁体中文，我们将简体中文对应的资源文件 strings_zh.properties 重命名为 strings_zh_CN.properties，并添加如清单 9 所示的繁体中文资源文件 strings_zh_TW.properties。</p><h5 id="listing9">清单 9. strings_zh_TW.properties</h5><div class="codesection"><pre class="displaycode"> string_username= 用戶名
+ string_password= 密碼
+ string_login= 登入
+ string_hello= 您好 {0}，歡迎使用 jQuery.i18n.properties，您的密鑰是：{1}。
+ string_usernotexist= 用戶不存在
+ string_wrongpassword= 密碼錯誤</pre></div><p>运行程序，分别将浏览器语言设置为“中文（简体中文）”和“中文（繁體中文）”进行测试，发现程序并不能如我们预期显示简体中文和繁体中文，而是都以英文显示。分析后发现，造成这种现象的原因，是 jQuery.i18n.properties 插件默认的资源文件命名方式与浏览器上报的语言区域编码不一致，从而导致插件加载资源文件失败。以简体中文为例，jQuery.i18n.properties 默认的资源文件命名方式为“zh_CN”的形式，而浏览器上报的语言区域编码为 zh-CN”的形式，此时 jQuery.i18n.properties 插件加载资源文件的步骤如下：</p><ol type="1"><li>
+加载默认资源文件即 strings.properties，成功。</li><li>
+加载名称为 strings_zh.properties 的资源文件，失败。</li><li>
+加载名称为 stirngs_zh-CN.properties 的资源文件，失败。</li></ol><p>由于第 2 步和第 3 步都失败，所以 jQuery.i18n.properties 使用默认资源文件 strings.properties 中的翻译，也就是英文翻译。同理，繁体中文也不能正常显示。解决该问题有 3 种方法：</p><ol type="1"><li>
+采用 strings_zh-CN.properties 的方式命名资源文件。这是最简单的方法，但这种命名方式和 Java 标准的资源文件命名方式不一致；</li><li>
+使用默认的资源文件命名方式，并在调用 jQuery.i18n.properties() 方法之前使用 var lang = jQuery.i18n.browserLang()<code>的方式</code>显式获取浏览器的语言，然后将 lang 中的“-”替换为”_”，并在使用 jQuery.i18n.properties() 方法时将 lang 作为参数。</li><li>
+更改 jQuery.i18n.properties 的源码。</li></ol><p>这里我们采用最简单的第一种方式，将简体中文对应的资源文件 string_zh_CN.properties 重命名为 stirngs_zh-CN.properties，并将繁体中文对应的资源文件 strings_zh_TW.properties 重命名为 strings_zh-TW.properties。现在，程序就可以根据浏览器语言设置自动区分简体中文和繁体中文了，繁体中文的运行效果如图 4 所示。</p><h5 id="fig4">图 4. 繁体中文环境下的运行效果</h5><img alt="图 4. 繁体中文环境下的运行效果" src="image009.jpg" width="562" /><div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="major5">总结</h2><p>本文对 jQuery 国际化插件 jQuery.i18n.properties 进行了介绍，并用实际例子介绍了如何使用 jQuery.i18n.properties 插件实现 Web 前端的国际化。总结起来，jQuery.i18n.properties 具有轻量级（压缩后仅 4kb）、简单易用等特点，但是作为一个普及度不高的轻量级插件，不一定适用于大型的或对效率要求极高的场景。</p><p>希望本文能为正在寻找小型 Web 应用前端国际化解决方案的读者提供一定的参考。</p><!--CMA ID: 931965--><!--Site ID: 10--><!--XSLT stylesheet used to transform this file: dw-document-html-7.0.xsl-->
+<div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><h2 id="download">下载</h2><table class="ibm-data-table dw-download-table" cellpadding="0" cellspacing="0" border="0"><thead><tr><th scope="col">描述</th><th scope="col">名字</th><th scope="col">大小</th></tr></thead><tbody><tr><th scope="row" class="ibm-table-row">示例代码</th><td nowrap="nowrap"><a href="http://www.ibm.com/developerworks/apps/download/index.jsp?contentid=931965&amp;filename=hello-i18n.zip&amp;method=http&amp;locale=zh_CN">hello-i18n.zip</a></td><td nowrap="nowrap">390KB</td></tr></tbody></table>
+
+</div>
+</div>
+<!-- 1_1_COLUMN_END -->
+
+<!-- SPLIT_COLUMNS_BEGIN -->
+<div class="ibm-columns">
+
+<!-- 6_4_COLUMN_BEGIN -->
+<div class="ibm-col-6-4">
+
+<h2 id="resources" class="ibm-rule">参考资料 </h2><h3 class="dw-resources-category-heading">学习</h3><ul class="ibm-bullet-list"><li>
+您可以访问 <a href="http://code.google.com/p/jquery-i18n-properties/">jQuery.i18n.properties</a> 主页，了解 jQuery.i18n.properties 插件的详细信息。</li><li>
+您可以访问 <a href="http://en.wikipedia.org/wiki/ISO_639">ISO-639 Wiki</a>， 了解 ISO-369 语言编码标准。</li><li>
+您可以访问 <a href="http://en.wikipedia.org/wiki/ISO_3166">ISO-3166 Wiki</a>， 了解 ISO-3166 国家名称编码标准。</li><li>
+您可以通过 <a href="http://incubator.apache.org/wink/">Apache Wink</a> 主页，了解如何通过 Wink 建立 RESTFul Web 服务。</li><li><a href="http://www.ibm.com/developerworks/cn/web/">developerWorks Web development
+               专区</a>：通过专门关于 Web 技术的文章和教程，扩展您在网站开发方面的技能。</li><li><a href="http://www.ibm.com/developerworks/cn/ajax/">developerWorks Ajax 资源中心</a>：这是有关 Ajax 编程模型信息的一站式中心，包括很多文档、教程、论坛、blog、wiki 和新闻。任何 Ajax 的新信息都能在这里找到。</li><li><a href="http://www.ibm.com/developerworks/cn/web20/">developerWorks Web 2.0 资源中心</a>，这是有关 Web 2.0 相关信息的一站式中心，包括大量 Web 2.0 技术文章、教程、下载和相关技术资源。您还可以通过 <a href="http://www.ibm.com/developerworks/cn/web20/newto/">Web 2.0 新手入门</a> 栏目，迅速了解 Web 2.0 的相关概念。</li><li>查看 <a href="http://www.ibm.com/developerworks/cn/web/lp/html5/">HTML5 专题</a>，了解更多和 HTML5 相关的知识和动向。</li></ul><h3 class="dw-resources-category-heading">讨论</h3><ul class="ibm-bullet-list"><li>加入 <a href="http://www.ibm.com/developerworks/cn/community/" onmouseover="linkQueryAppend(this)">developerWorks 中文社区</a>。查看开发人员推动的博客、论坛、组和维基，并与其他 developerWorks 用户交流。</li></ul>
+
+<!-- INLINE_COMMENTS_BEGIN -->
+<h2 id="icomments" class="ibm-alternate-rule ibm-no-print">条评论</h2>
+    
+<div class="ibm-no-print" id="dw-icomments-container">	
+	<div id="threadShow"></div>
+</div>
+<!-- Sign in OVERLAY STARTS HERE -->
+    
+<!-- Sign in OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="signin_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+
+ <div class="ibm-title">
+<h2>developerWorks: 登录</h2>
+<div id="ibm-overlay-error-signin" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form class="ibm-column-form" id="sFormId" action="" method="post" name="sForm" onsubmit="return false;">
+<p><label for="ibmid">IBM ID:<span class="ibm-required">*</span></label><span>
+    <input name="ibm-id" id="ibmid" size="25" value="" class="required" type="text" onkeypress="dwsi.siInst.handleEP(event,this.form);" />
+    <br /><a onclick="window.location='/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh_CN&amp;d='+encodeURIComponent(location.protocol + '//' + location.hostname + location.pathname + '#icomments'); return false;" href="#" class="ibm-forward-link">需要一个 IBM ID？</a> <br />
+    <a class="ibm-forward-link" href="/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 IBM ID？</a> 
+</span>
+</p> 
+<p><label for="password">密码：<span class="ibm-required">*</span></label><span>
+    <input name="password" id="password" size="25" value="" class="required" type="password" onkeypress="dwsi.siInst.handleEP(event,this.form);" />
+    <br /><a class="ibm-forward-link" href="#" onclick="(function ()
+        {window.location='https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d='+encodeURIComponent(dwsi.siInst.getAuthUrl())+'%3Fm%3Dloginpage%26lang%3Dzh_CN%26d%3D'+encodeURIComponent(location.href);})();">忘记密码？</a>
+    <br /><a class="ibm-forward-link" href="#" onclick="(function () {window.location='https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d='+encodeURIComponent(location.href);})();">更改您的密码</a></span></p> 
+<p class="dw-perm-box">
+	<span><input id="perm" type="checkbox" name="perm_name"/><label for="perm"> 保持登录。</label></span>
+</p>
+<p>单击提交则表示您同意developerWorks 的条款和条件。 <a
+    href="/developerworks/community/terms?lang=zh">查看条款和条件</a>。</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit" /><span class="ibm-sep">&nbsp;</span>
+<input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide('signin_overlay');return false;"/></p>
+</div>
+</form>
+ <div class="ibm-overlay-rule"><hr /></div> 
+
+<p>在您首次登录 developerWorks 时，会为您创建一份个人概要。<strong>您的个人概要中的信息（您的姓名、国家/地区，以及公司名称）是公开显示的，而且会随着您发布的任何内容一起显示，除非您选择隐藏您的公司名称。</strong>您可以随时更新您的 IBM 帐户。</p>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+<!-- Display name OVERLAY STARTS HERE -->
+<div class="ibm-common-overlay" id="displayname_overlay">
+<div class="ibm-head">
+<p><a class="ibm-common-overlay-close" href="#" onclick="dwsi.siInst.clearForm();">关闭 [x]</a></p>
+</div>
+<div class="ibm-body">
+<div class="ibm-main">
+<div class="ibm-title">
+<h2>选择您的昵称</h2><br /><br />
+<div id="ibm-overlay-error-dname" class="no-display"></div>
+</div>
+<div class="ibm-container ibm-alternate ibm-buttons-last">
+<div class="ibm-container-body">
+<p class="ibm-overlay-intro">当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 发布的内容显示在一起。</p><p><strong>昵称长度在 3 至 31 个字符之间</strong>。 
+    您的昵称在 developerWorks 社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</p>
+<p class="ibm-overlay-intro">标有星（<span class="ibm-required">*</span>）号的字段是必填字段。</p> 
+<form id="dFormId" method="post" action="" name="dForm" onsubmit="return false;" class="ibm-column-form">
+<p><label for="displayname">昵称：<span class="ibm-required">*</span></label><span>
+    <input name="displayname" id="displayname" size="25" value="" type="text" onkeypress="dwsi.siInst.handleEP(event,this.form);" /></span>
+    <span class="ibm-form-note">(昵称长度在 3 至 31 个字符之间)</span>
+</p>
+<p>单击<strong>提交</strong>则表示您同意developerWorks 的条款和条件。 <a href="/developerworks/community/terms?lang=zh">查看条款和条件</a>.</p>
+<div class="ibm-buttons-row">
+   <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="dwsi.siInst.signin();return false;" type="submit" /><span class="ibm-sep">&nbsp;</span>
+<input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="dwsi.siInst.clearForm();ibmweb.overlay.hide('displayname_overlay');return false;" /></p>
+</div>
+</form>
+<div class="ibm-overlay-rule"><hr /></div>
+<div><p class="dw-c-overlay-secure">所有提交的信息确保安全。</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="ibm-footer"></div>
+</div>
+
+
+<!-- INLINE_COMMENTS_END -->
+
+</div>
+<!-- 6_4_COLUMN_END -->
+
+<!-- 6_2_COLUMN_BEGIN -->
+<div class="ibm-col-6-2">
+
+<!-- Next_Steps -->
+<!-- Dig_Deeper -->
+
+
+<!-- Promotion_Module -->
+    
+<!-- PROMOTION_MODULE_START -->
+<div class="ibm-alternate-rule"><hr /></div>
+<ul class="ibm-portrait-module-list">
+<li><img height="60" width="60" src="//www.ibm.com/developerworks/i/sm-f-bluemixrobot60.png" alt="IBM Bluemix 资源中心"/>
+<h3><a class="ibm-feature-link"
+    href="http://www.ibm.com/developerworks/cn/cloud/bluemix/">IBM Bluemix 资源中心</a></h3>
+<p>文章、教程、演示，帮助您构建、部署和管理云应用。</p></li>
+<li><img height="60" width="60" src="//www.ibm.com/developerworks/i/sm-f-comcommunity60.png" alt="developerWorks 中文社区"/>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/community/">developerWorks 中文社区</a></h3>
+<p>立即加入来自 IBM 的专业 IT 社交网络。</p></li>
+<li><img height="60" width="60" src="//www.ibm.com/developerworks/i/sm-f-evaluationsoftware60.png" alt=""/>
+<h3><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/downloads/">IBM 软件资源中心</a></h3>
+<p>免费下载、试用软件产品，构建应用并提升技能。</p></li>
+</ul>
+<!-- PROMOTION_MODULE_END -->
+</div>
+<!-- 6_2_COLUMN_END -->
+
+</div>
+<!-- SPLIT_COLUMNS_END -->
+
+<!-- BOTTOM_BACK_TO_TOP -->
+<div class="ibm-columns">
+<div class="ibm-col-1-1">
+	<div class="ibm-alternate-rule"><hr/></div><p class="ibm-ind-link ibm-back-to-top"><a href="#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p>
+</div>
+</div>
+
+<!-- Rating_Meta_BEGIN -->
+<!--Rating_Meta_BEGIN--><div class="metavalue">static.content.url=http://www.ibm.com/developerworks/js/artrating/</div><div class="metavalue">SITE_ID=10</div><div class="metavalue">Zone=Web development</div><div class="metavalue">ArticleID=931965</div><div class="metavalue">ArticleTitle=使用 jQuery.i18n.properties 实现 Web 前端的国际化
+		</div><div class="metavalue">publish-date=05302013</div><script language="javascript" type="text/javascript">document.write('<div class="metavalue">url='+location.href.replace(/</g,  '%3C')+'</div>');</script><!--Rating_Meta_END-->
+<!-- Rating_Meta_END -->
+
+</div>
+<!-- END_IBM_CONTENT_MAIN -->
+
+</div>
+<!-- END_IBM_CONTENT_BODY -->
+
+</div>
+<!-- END_IBM_CONTENT -->
+
+</div>
+<!-- END_IBM_PCON -->
+<!-- FOOTER_BEGIN -->
+<div id="ibm-footer"><!-- IBM footer container; disabled --></div>
+
+<div id="ibm-footer-module-dwwrapper" role="contentinfo" aria-label="developerWorks Footer">
+
+<div id="ibm-footer-module-dw">
+	<div class="dw-footer-columns">
+		<div class="dw-footer-col-6-1 dw-footer-col-6-1-cn">
+			<ul>
+				<li><a href="https://www.ibm.com/developerworks/secure/feedback.jsp?domain=dwchina" tabindex="0">帮助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/author/" tabindex="0">联系编辑</a></li>
+				<li><a href="https://www.ibm.com/developerworks/secure/myideas2.jsp?domain=dwchina" tabindex="0">提交内容</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/rss/" tabindex="0">订阅源</a></li>
+			</ul>
+        </div>
+		<div class="dw-footer-col-6-2">
+			<ul>
+				<li><a class="dwcn-sina-link" href="http://weibo.com/ibmdw/" target="_blank" tabindex="0">新浪微博</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/report?lang=zh" tabindex="0">报告滥用</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/terms?lang=zh" tabindex="0">使用条款</a></li>
+				<li><a href="https://www.ibm.com/developerworks/cn/community/terms/thirdparty/" tabindex="0">第三方提示</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-3">
+			<ul>
+				<li><a href="http://www.ibm.com/privacy/cn/zh/" tabindex="0">隐私条约</a></li>
+				<li><a href="http://www.ibm.com/ibm/accessibility/cn/" tabindex="0">浏览辅助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/academic/" tabindex="0">IBM 教育学院教育培养计划</a></li><li><a href="http://www.ibm.com/developerworks/cn/gep/">IBM 创业企业全球扶持计划</a></li><li><a href="http://www.ibm.com/partnerworld/isv/">ISV 资源 (英语)</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-4"> 
+			<ul>
+				<li><a href="//www.ibm.com/developerworks/cn/newsletter/" tabindex="0">dW 中国每周时事通讯</a></li>
+			</ul>
+			</form>
+		</div>
+		<div class="dw-footer-col-6-5">
+			<ul>
+				<li class="dw-footer-lang-head">选择语言：</li>
+				<li><a href="http://www.ibm.com/developerworks/" tabindex="0">English</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/" lang="zh" tabindex="0">中文</a></li>
+				<li><a href="http://www.ibm.com/developerworks/jp/" lang="ja" tabindex="0">日本語</a></li>
+				<li><a href="http://www.ibm.com/developerworks/ru/" lang="ru" tabindex="0">Русский</a></li>
+				<li><a href="http://www.ibm.com/developerworks/br/" lang="pt" tabindex="0">Português (Brasil)</a></li>
+				<li><a href="http://www.ibm.com/developerworks/ssa/" lang="es" tabindex="0">Español</a></li>
+				<li><a href="https://developer.ibm.com/kr/" lang="kr" tabindex="0">한글</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-6">
+			<img width="223" height="46" alt="IBM®" src="//dw1.s81c.com/developerworks/i/mf/dwn-ibm-logo-v17.png">
+			<img class="dw-preload" src="//1.www.s81c.com/i/v17/icons/ibm_sprite_social_blue_ON.png" alt="" width="1" height="1"/>
+		</div>
+	</div>
+</div>
+
+</div><!-- FOOTER_END -->
+
+<!-- END_IBM-TOP -->
+</div>
+
+<!-- SCRIPTS_INCLUDE_BEGIN -->
